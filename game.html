@@ -31,6 +31,7 @@
             width: 100%;
             height: 100%;
             display: block;
+            background: linear-gradient(180deg, #0a1a2e 0%, #16213e 50%, #0f3460 100%);
         }
 
         /* ==================== UI ELEMENTS ==================== */
@@ -58,7 +59,7 @@
             font-size: 48px;
             font-weight: bold;
             color: #ff0080;
-            text-shadow: 0 0 20px #ff0080;
+            text-shadow: 0 0 20px #ff0080, 0 0 40px #ff0080;
             margin-bottom: 10px;
         }
 
@@ -83,12 +84,12 @@
             position: absolute;
             bottom: 20px;
             right: 20px;
-            width: 150px;
-            height: 150px;
-            border: 2px solid #00d4ff;
-            background: rgba(0, 0, 0, 0.7);
+            width: 180px;
+            height: 180px;
+            border: 3px solid #00d4ff;
+            background: rgba(0, 0, 0, 0.8);
             border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5), inset 0 0 20px rgba(0, 212, 255, 0.1);
             pointer-events: none;
         }
 
@@ -101,14 +102,14 @@
 
         .minimap-player {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             background: #00ff00;
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px #00ff00;
+            box-shadow: 0 0 15px #00ff00;
         }
 
         /* ==================== MENU ==================== */
@@ -118,7 +119,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(0, 20, 40, 0.95), rgba(0, 40, 80, 0.95));
+            background: linear-gradient(135deg, rgba(10, 26, 46, 0.98), rgba(22, 33, 62, 0.98));
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -135,18 +136,27 @@
         }
 
         .menu h1 {
-            font-size: 64px;
+            font-size: 80px;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #00d4ff, #ff006e);
+            background: linear-gradient(135deg, #00d4ff, #ff006e, #00d4ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: glow 2s ease-in-out infinite;
+            font-weight: bold;
+            letter-spacing: 3px;
         }
 
         @keyframes glow {
-            0%, 100% { text-shadow: 0 0 10px #00d4ff; }
-            50% { text-shadow: 0 0 30px #00d4ff, 0 0 50px #ff006e; }
+            0%, 100% { filter: drop-shadow(0 0 10px #00d4ff); }
+            50% { filter: drop-shadow(0 0 30px #00d4ff) drop-shadow(0 0 50px #ff006e); }
+        }
+
+        .menu-subtitle {
+            font-size: 18px;
+            color: #ff006e;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px #ff006e;
         }
 
         .menu-buttons {
@@ -157,8 +167,8 @@
         }
 
         .menu-btn {
-            padding: 15px 50px;
-            font-size: 18px;
+            padding: 15px 60px;
+            font-size: 20px;
             background: linear-gradient(135deg, #00d4ff, #0099cc);
             color: #000;
             border: 2px solid #00d4ff;
@@ -166,12 +176,13 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
         }
 
         .menu-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);
+            transform: scale(1.08);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.8);
+            background: linear-gradient(135deg, #00ffff, #00d4ff);
         }
 
         .menu-btn:active {
@@ -184,26 +195,32 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, rgba(0, 20, 40, 0.98), rgba(0, 40, 80, 0.98));
-            padding: 40px;
-            border: 2px solid #00d4ff;
+            background: linear-gradient(135deg, rgba(10, 26, 46, 0.98), rgba(22, 33, 62, 0.98));
+            padding: 50px;
+            border: 3px solid #00d4ff;
             border-radius: 12px;
             text-align: center;
             z-index: 999;
             display: none;
             color: #00d4ff;
             pointer-events: auto;
-            box-shadow: 0 0 50px rgba(0, 212, 255, 0.4);
+            box-shadow: 0 0 80px rgba(0, 212, 255, 0.5);
         }
 
         .pause-menu.show {
             display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
         .pause-menu h2 {
-            font-size: 36px;
+            font-size: 40px;
             margin-bottom: 30px;
-            text-shadow: 0 0 20px #00d4ff;
+            color: #ff006e;
         }
 
         .pause-menu-buttons {
@@ -213,536 +230,495 @@
         }
 
         .pause-btn {
-            padding: 10px 30px;
+            padding: 12px 40px;
             font-size: 16px;
-            background: rgba(0, 212, 255, 0.1);
-            color: #00d4ff;
-            border: 2px solid #00d4ff;
-            border-radius: 6px;
+            background: linear-gradient(135deg, #ff006e, #ff0099);
+            color: #fff;
+            border: 2px solid #ff006e;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: bold;
             transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.3);
         }
 
         .pause-btn:hover {
-            background: rgba(0, 212, 255, 0.2);
-            transform: translateX(5px);
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 0, 110, 0.6);
         }
 
-        /* ==================== RACE INFO ==================== */
-        .race-info {
+        .pause-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ==================== MOBILE CONTROLS ==================== */
+        .mobile-controls {
             position: absolute;
             bottom: 20px;
             left: 20px;
+            display: none;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .mobile-controls.active {
+            display: flex;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 212, 255, 0.3);
+            border: 2px solid #00d4ff;
+            border-radius: 50%;
             color: #00d4ff;
-            font-size: 14px;
-            text-shadow: 0 0 10px #00d4ff;
-            pointer-events: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
         }
 
-        .race-timer {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff0080;
-            text-shadow: 0 0 15px #ff0080;
-            margin-bottom: 10px;
+        .control-btn:active {
+            background: rgba(0, 212, 255, 0.6);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
         }
 
-        /* ==================== CONTROLS INFO ==================== */
-        .controls-info {
+        .stats-panel {
             position: absolute;
             bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00d4ff;
+            padding: 15px;
+            border-radius: 8px;
             color: #00d4ff;
             font-size: 12px;
+            font-family: 'Courier New', monospace;
             text-shadow: 0 0 10px #00d4ff;
-            pointer-events: none;
-            text-align: center;
-        }
-
-        /* ==================== RESPONSIVE ==================== */
-        @media (max-width: 768px) {
-            .hud-top {
-                font-size: 12px;
-            }
-            
-            .speed-display {
-                font-size: 36px;
-            }
-            
-            .minimap {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .menu h1 {
-                font-size: 42px;
-            }
-            
-            .menu-btn {
-                padding: 12px 40px;
-                font-size: 16px;
-            }
         }
     </style>
 </head>
 <body>
-
-<div id="gameContainer">
-    <canvas id="canvas"></canvas>
-    
-    <!-- ==================== MAIN MENU ==================== -->
-    <div id="mainMenu" class="menu">
-        <h1>🏎️ TOKYO RACING</h1>
-        <p style="font-size: 18px; margin-bottom: 40px; color: #a0a0a0;">Open-World Racing Experience</p>
-        <div class="menu-buttons">
-            <button class="menu-btn" onclick="startRace()">▶️ START RACE</button>
-            <button class="menu-btn" onclick="startFreeRoam()">🛣️ FREE ROAM</button>
-            <button class="menu-btn" onclick="showSettings()">⚙️ SETTINGS</button>
-            <button class="menu-btn" onclick="showCredits()">ℹ️ ABOUT</button>
-        </div>
-    </div>
-
-    <!-- ==================== PAUSE MENU ==================== -->
-    <div id="pauseMenu" class="pause-menu">
-        <h2>⏸️ PAUSED</h2>
-        <div class="pause-menu-buttons">
-            <button class="pause-btn" onclick="resumeGame()">▶️ RESUME</button>
-            <button class="pause-btn" onclick="returnToMenu()">🏠 MAIN MENU</button>
-            <button class="pause-btn" onclick="showSettings()">⚙️ SETTINGS</button>
-        </div>
-    </div>
-
-    <!-- ==================== HUD ==================== -->
-    <div id="hud" class="hud">
-        <div class="hud-top">
-            <div class="speed-display" id="speedDisplay">0 km/h</div>
-            <div class="rpm-display" id="rpmDisplay">RPM: 0</div>
-            <div style="margin-top: 10px; font-size: 12px; color: #00d4ff;">GEAR: <span id="gearDisplay">P</span></div>
-        </div>
-
-        <div class="hud-right">
-            <div id="timeDisplay">TIME: 00:00</div>
-            <div style="margin-top: 10px;" id="distanceDisplay">DISTANCE: 0m</div>
-            <div style="margin-top: 10px;" id="fpsDisplay">FPS: 60</div>
-        </div>
-
-        <div class="minimap">
-            <div class="minimap-content">
-                <div class="minimap-player"></div>
+    <div id="gameContainer">
+        <canvas id="canvas"></canvas>
+        
+        <div class="hud">
+            <div class="hud-top">
+                <div class="speed-display" id="speedDisplay">0 km/h</div>
+                <div class="rpm-display" id="rpmDisplay">RPM: 0</div>
+            </div>
+            <div class="hud-right" id="hudRight">
+                <div>Position: <span id="posX">0</span>, <span id="posY">0</span></div>
+                <div>Direction: <span id="dirDisplay">0</span>°</div>
+                <div>Time: <span id="timeDisplay">00:00</span></div>
+            </div>
+            <div class="minimap">
+                <div class="minimap-content" id="minimapContent">
+                    <div class="minimap-player"></div>
+                </div>
             </div>
         </div>
 
-        <div class="race-info">
-            <div id="positionDisplay">POSITION: --</div>
-            <div class="race-timer" id="lapTimer">LAP: 00:00</div>
+        <div class="menu" id="menu">
+            <h1>TOKYO RACER</h1>
+            <div class="menu-subtitle">🏎️ Open-World Racing Game 🌆</div>
+            <div class="menu-buttons">
+                <button class="menu-btn" onclick="startGame()">▶ START GAME</button>
+                <button class="menu-btn" onclick="showSettings()">⚙ SETTINGS</button>
+                <button class="menu-btn" onclick="showControls()">🎮 CONTROLS</button>
+            </div>
         </div>
 
-        <div class="controls-info">
-            <div id="controlsText">ARROW KEYS / WASD: Drive | SPACE: Brake | P: Pause | ESC: Menu</div>
+        <div class="pause-menu" id="pauseMenu">
+            <h2>⏸ PAUSED</h2>
+            <div class="pause-menu-buttons">
+                <button class="pause-btn" onclick="resumeGame()">RESUME</button>
+                <button class="pause-btn" onclick="goMainMenu()">MAIN MENU</button>
+            </div>
+        </div>
+
+        <div class="mobile-controls" id="mobileControls">
+            <button class="control-btn" id="upBtn">⬆</button>
+            <button class="control-btn" id="leftBtn">⬅</button>
+            <button class="control-btn" id="downBtn">⬇</button>
+            <button class="control-btn" id="rightBtn">➡</button>
         </div>
     </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-    // ==================== GAME STATE ==================== 
-    let gameState = {
-        isRunning: false,
-        isPaused: false,
-        gameMode: 'menu', // menu, race, freeRoam
-        speed: 0,
-        rpm: 0,
-        gear: 'P',
-        position: { x: 0, y: 0, z: 0 },
-        rotation: 0,
-        lapTime: 0,
-        totalTime: 0,
-        distance: 0,
-        fps: 60,
-        throttle: 0,
-        steering: 0,
-        brake: 0,
-    };
-
-    // ==================== THREE.JS SETUP ==================== 
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x1a1a2e);
-    scene.fog = new THREE.Fog(0x1a1a2e, 2000, 5000);
-
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-    camera.position.set(0, 10, 30);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: document.getElementById('canvas') });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.shadowMap.enabled = true;
-
-    // ==================== LIGHTING ==================== 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(100, 100, 50);
-    directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.width = 2048;
-    directionalLight.shadow.mapSize.height = 2048;
-    scene.add(directionalLight);
-
-    // ==================== WORLD CREATION ==================== 
-    function createWorld() {
-        // Ground
-        const groundGeometry = new THREE.PlaneGeometry(5000, 5000);
-        const groundMaterial = new THREE.MeshLambertMaterial({ color: 0x333333 });
-        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-        ground.rotation.x = -Math.PI / 2;
-        ground.receiveShadow = true;
-        scene.add(ground);
-
-        // Road
-        const roadGeometry = new THREE.PlaneGeometry(200, 3000);
-        const roadMaterial = new THREE.MeshLambertMaterial({ color: 0x1a1a1a });
-        const road = new THREE.Mesh(roadGeometry, roadMaterial);
-        road.rotation.x = -Math.PI / 2;
-        road.position.y = 0.01;
-        road.receiveShadow = true;
-        scene.add(road);
-
-        // Road markings
-        const canvas = document.createElement('canvas');
-        canvas.width = 512;
-        canvas.height = 512;
+    <script>
+        const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#1a1a1a';
-        ctx.fillRect(0, 0, 512, 512);
-        ctx.strokeStyle = '#ffff00';
-        ctx.lineWidth = 4;
-        for (let i = 0; i < 512; i += 50) {
-            ctx.beginPath();
-            ctx.moveTo(256, i);
-            ctx.lineTo(256, i + 25);
-            ctx.stroke();
-        }
         
-        const texture = new THREE.CanvasTexture(canvas);
-        texture.repeat.y = 6;
-        texture.wrapT = THREE.RepeatWrapping;
-        
-        const roadMarkingsGeometry = new THREE.PlaneGeometry(200, 3000);
-        const roadMarkingsMaterial = new THREE.MeshBasicMaterial({ map: texture });
-        const roadMarkings = new THREE.Mesh(roadMarkingsGeometry, roadMarkingsMaterial);
-        roadMarkings.rotation.x = -Math.PI / 2;
-        roadMarkings.position.y = 0.02;
-        scene.add(roadMarkings);
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        // Buildings
-        for (let i = 0; i < 20; i++) {
-            const buildingWidth = Math.random() * 50 + 30;
-            const buildingHeight = Math.random() * 150 + 50;
-            const buildingDepth = Math.random() * 50 + 30;
-            
-            const buildingGeometry = new THREE.BoxGeometry(buildingWidth, buildingHeight, buildingDepth);
-            const buildingMaterial = new THREE.MeshStandardMaterial({
-                color: new THREE.Color().setHSL(Math.random(), 0.3, 0.3),
-                metalness: 0.3,
-                roughness: 0.7
-            });
-            const building = new THREE.Mesh(buildingGeometry, buildingMaterial);
-            building.position.set(
-                (Math.random() - 0.5) * 1000,
-                buildingHeight / 2,
-                -1000 + Math.random() * 2000
-            );
-            building.castShadow = true;
-            building.receiveShadow = true;
-            scene.add(building);
-        }
-
-        // Neon lights
-        for (let i = 0; i < 10; i++) {
-            const lightColor = [0xff006e, 0x00d4ff, 0x00ff00][Math.floor(Math.random() * 3)];
-            const neonLight = new THREE.PointLight(lightColor, 1, 300);
-            neonLight.position.set(
-                (Math.random() - 0.5) * 1000,
-                Math.random() * 100 + 50,
-                -1000 + Math.random() * 2000
-            );
-            scene.add(neonLight);
-        }
-    }
-
-    createWorld();
-
-    // ==================== VEHICLE CREATION ==================== 
-    let vehicle;
-
-    function createVehicle() {
-        const vehicleGroup = new THREE.Group();
-        
-        // Car body
-        const bodyGeometry = new THREE.BoxGeometry(2, 1.5, 4.5);
-        const bodyMaterial = new THREE.MeshStandardMaterial({
-            color: 0xff0000,
-            metalness: 0.8,
-            roughness: 0.2
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         });
-        const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-        body.position.y = 0.75;
-        body.castShadow = true;
-        body.receiveShadow = true;
-        vehicleGroup.add(body);
 
-        // Wheels
-        const wheels = [];
-        const wheelPositions = [
-            [-1, 0.4, 1.2],
-            [1, 0.4, 1.2],
-            [-1, 0.4, -1.2],
-            [1, 0.4, -1.2]
+        // ==================== GAME STATE ====================
+        let gameState = {
+            running: false,
+            paused: false,
+            startTime: 0,
+            elapsedTime: 0
+        };
+
+        // ==================== PLAYER ====================
+        let player = {
+            x: 400,
+            y: 300,
+            width: 25,
+            height: 40,
+            vx: 0,
+            vy: 0,
+            angle: 0,
+            speed: 0,
+            maxSpeed: 15,
+            acceleration: 0.3,
+            friction: 0.92,
+            rotation: 0,
+            rpm: 0
+        };
+
+        // ==================== INPUT HANDLING ====================
+        let keys = {};
+        
+        window.addEventListener('keydown', (e) => {
+            keys[e.key.toLowerCase()] = true;
+            if (e.key === ' ') {
+                e.preventDefault();
+                if (gameState.running && !gameState.paused) {
+                    pauseGame();
+                }
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            keys[e.key.toLowerCase()] = false;
+        });
+
+        // ==================== MAP & BUILDINGS ====================
+        const mapWidth = 2000;
+        const mapHeight = 1500;
+        const buildings = [
+            { x: 100, y: 100, w: 120, h: 80, type: 'skyscraper', color: '#ff3366' },
+            { x: 300, y: 150, w: 100, h: 100, type: 'office', color: '#00d4ff' },
+            { x: 550, y: 80, w: 150, h: 120, type: 'mall', color: '#ffaa00' },
+            { x: 900, y: 100, w: 180, h: 150, type: 'tower', color: '#ff6600' },
+            { x: 1200, y: 200, w: 140, h: 110, type: 'building', color: '#00ff88' },
+            { x: 150, y: 400, w: 130, h: 140, type: 'hotel', color: '#ff0099' },
+            { x: 500, y: 500, w: 160, h: 100, type: 'plaza', color: '#00ffff' },
+            { x: 1000, y: 600, w: 120, h: 120, type: 'garage', color: '#ff6b6b' },
+            { x: 300, y: 1000, w: 150, h: 130, type: 'station', color: '#ffff00' },
+            { x: 1300, y: 800, w: 140, h: 100, type: 'temple', color: '#ff3366' },
+            { x: 600, y: 1100, w: 180, h: 140, type: 'market', color: '#00ff00' },
+            { x: 1500, y: 200, w: 160, h: 120, type: 'factory', color: '#888888' },
+            { x: 1800, y: 900, w: 170, h: 140, type: 'arena', color: '#ff00ff' },
         ];
 
-        wheelPositions.forEach(pos => {
-            const wheelGeometry = new THREE.CylinderGeometry(0.4, 0.4, 0.3, 16);
-            const wheelMaterial = new THREE.MeshStandardMaterial({
-                color: 0x222222,
-                metalness: 0.6,
-                roughness: 0.5
-            });
-            const wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
-            wheel.rotation.z = Math.PI / 2;
-            wheel.position.set(pos[0], pos[1], pos[2]);
-            wheel.castShadow = true;
-            wheel.receiveShadow = true;
-            vehicleGroup.add(wheel);
-            wheels.push(wheel);
-        });
-
-        // Windows
-        const windowGeometry = new THREE.BoxGeometry(1.8, 0.8, 1.5);
-        const windowMaterial = new THREE.MeshStandardMaterial({
-            color: 0x0099ff,
-            metalness: 0.9,
-            roughness: 0.1,
-            transparent: true,
-            opacity: 0.5
-        });
-        const window1 = new THREE.Mesh(windowGeometry, windowMaterial);
-        window1.position.set(0, 1.3, 0.5);
-        vehicleGroup.add(window1);
-
-        vehicleGroup.position.set(0, 0, 0);
-        vehicleGroup.wheels = wheels;
-        scene.add(vehicleGroup);
-        return vehicleGroup;
-    }
-
-    vehicle = createVehicle();
-
-    // ==================== INPUT HANDLING ==================== 
-    const keys = {};
-    window.addEventListener('keydown', (e) => {
-        keys[e.key] = true;
-        if (e.key === 'p' || e.key === 'P') togglePause();
-        if (e.key === 'Escape') returnToMenu();
-    });
-
-    window.addEventListener('keyup', (e) => {
-        keys[e.key] = false;
-    });
-
-    function handleInput() {
-        gameState.throttle = 0;
-        gameState.brake = 0;
-        gameState.steering = 0;
-
-        if (keys['w'] || keys['W'] || keys['ArrowUp']) gameState.throttle = 1;
-        if (keys['s'] || keys['S'] || keys['ArrowDown']) gameState.brake = 1;
-        if (keys['a'] || keys['A'] || keys['ArrowLeft']) gameState.steering = -1;
-        if (keys['d'] || keys['D'] || keys['ArrowRight']) gameState.steering = 1;
-        if (keys[' ']) gameState.brake = 1;
-    }
-
-    // ==================== PHYSICS ==================== 
-    function updatePhysics() {
-        // Acceleration
-        const maxSpeed = 300; // km/h
-        const acceleration = 2;
-        const friction = 0.98;
-
-        if (gameState.throttle > 0) {
-            gameState.speed = Math.min(gameState.speed + acceleration, maxSpeed);
-        } else if (gameState.brake > 0) {
-            gameState.speed = Math.max(gameState.speed - acceleration * 2, 0);
-        } else {
-            gameState.speed *= friction;
+        // ==================== DRAWING FUNCTIONS ====================
+        function drawBuilding(building, offsetX, offsetY) {
+            const x = building.x - offsetX;
+            const y = building.y - offsetY;
+            
+            // Main body with gradient
+            const gradient = ctx.createLinearGradient(x, y, x, y + building.h);
+            gradient.addColorStop(0, building.color);
+            gradient.addColorStop(0.5, adjustBrightness(building.color, -20));
+            gradient.addColorStop(1, adjustBrightness(building.color, -40));
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x, y, building.w, building.h);
+            
+            // Neon outline
+            ctx.strokeStyle = building.color;
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = 0.8;
+            ctx.strokeRect(x, y, building.w, building.h);
+            ctx.globalAlpha = 1;
+            
+            // Windows
+            const windowSize = 8;
+            const gap = 2;
+            ctx.fillStyle = 'rgba(255, 255, 0, 0.6)';
+            for (let wy = y + 10; wy < y + building.h - 10; wy += windowSize + gap) {
+                for (let wx = x + 10; wx < x + building.w - 10; wx += windowSize + gap) {
+                    ctx.fillRect(wx, wy, windowSize, windowSize);
+                    ctx.strokeStyle = 'rgba(255, 200, 0, 0.4)';
+                    ctx.lineWidth = 0.5;
+                    ctx.strokeRect(wx, wy, windowSize, windowSize);
+                }
+            }
         }
 
-        // Steering
-        const maxRotation = 0.05;
-        if (gameState.steering !== 0) {
-            vehicle.rotation.y += gameState.steering * maxRotation;
+        function drawRoad(x1, y1, x2, y2, offsetX, offsetY, width = 60) {
+            const sx1 = x1 - offsetX;
+            const sy1 = y1 - offsetY;
+            const sx2 = x2 - offsetX;
+            const sy2 = y2 - offsetY;
+            
+            // Main road
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = width;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(sx1, sy1);
+            ctx.lineTo(sx2, sy2);
+            ctx.stroke();
+            
+            // Road markings
+            const len = Math.hypot(sx2 - sx1, sy2 - sy1);
+            const angle = Math.atan2(sy2 - sy1, sx2 - sx1);
+            const dx = Math.cos(angle);
+            const dy = Math.sin(angle);
+            
+            ctx.strokeStyle = '#ffff00';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([20, 10]);
+            ctx.beginPath();
+            ctx.moveTo(sx1, sy1);
+            ctx.lineTo(sx2, sy2);
+            ctx.stroke();
+            ctx.setLineDash([]);
         }
 
-        // Movement
-        const moveSpeed = gameState.speed / 3.6 * 0.016; // Convert to m/s
-        vehicle.position.x += Math.sin(vehicle.rotation.y) * moveSpeed;
-        vehicle.position.z += Math.cos(vehicle.rotation.y) * moveSpeed;
-
-        // Distance tracking
-        gameState.distance += moveSpeed;
-
-        // RPM calculation
-        gameState.rpm = (gameState.speed / maxSpeed) * 7500;
-
-        // Gear calculation
-        if (gameState.speed < 5) {
-            gameState.gear = 'P';
-        } else if (gameState.speed < 50) {
-            gameState.gear = '1';
-        } else if (gameState.speed < 100) {
-            gameState.gear = '2';
-        } else if (gameState.speed < 150) {
-            gameState.gear = '3';
-        } else if (gameState.speed < 200) {
-            gameState.gear = '4';
-        } else {
-            gameState.gear = '5';
+        function drawPlayer(offsetX, offsetY) {
+            const screenX = player.x - offsetX;
+            const screenY = player.y - offsetY;
+            
+            ctx.save();
+            ctx.translate(screenX, screenY);
+            ctx.rotate(player.angle);
+            
+            // Car body - sleek sports car design
+            const gradient = ctx.createLinearGradient(0, -player.height/2, 0, player.height/2);
+            gradient.addColorStop(0, '#ff1744');
+            gradient.addColorStop(0.5, '#ff0000');
+            gradient.addColorStop(1, '#cc0000');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.moveTo(0, -player.height/2);
+            ctx.lineTo(player.width/2, -player.height/3);
+            ctx.lineTo(player.width/2, player.height/3);
+            ctx.lineTo(0, player.height/2);
+            ctx.lineTo(-player.width/2, player.height/3);
+            ctx.lineTo(-player.width/2, -player.height/3);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Car windows
+            ctx.fillStyle = 'rgba(100, 150, 255, 0.6)';
+            ctx.fillRect(-player.width/3, -player.height/3, 2*player.width/3, player.height/6);
+            
+            // Neon glow
+            ctx.strokeStyle = 'rgba(255, 100, 0, 0.8)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Headlights
+            ctx.fillStyle = '#ffff00';
+            ctx.beginPath();
+            ctx.arc(player.width/2 - 3, -player.width/4, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(player.width/2 - 3, player.width/4, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
         }
 
-        // Wheel rotation
-        vehicle.wheels.forEach(wheel => {
-            wheel.rotation.x += gameState.speed / 50;
-        });
-
-        // Camera follow
-        const cameraDistance = 30;
-        const cameraHeight = 10;
-        camera.position.x = vehicle.position.x - Math.sin(vehicle.rotation.y) * cameraDistance;
-        camera.position.y = vehicle.position.y + cameraHeight;
-        camera.position.z = vehicle.position.z - Math.cos(vehicle.rotation.y) * cameraDistance;
-        camera.lookAt(vehicle.position.x, vehicle.position.y + 2, vehicle.position.z);
-    }
-
-    // ==================== UI UPDATE ==================== 
-    let frameCount = 0;
-    let lastFrameTime = Date.now();
-
-    function updateUI() {
-        // Speed display
-        document.getElementById('speedDisplay').textContent = Math.round(gameState.speed) + ' km/h';
-        document.getElementById('rpmDisplay').textContent = 'RPM: ' + Math.round(gameState.rpm);
-        document.getElementById('gearDisplay').textContent = gameState.gear;
-
-        // Time display
-        const minutes = Math.floor(gameState.totalTime / 60);
-        const seconds = Math.floor(gameState.totalTime % 60);
-        document.getElementById('timeDisplay').textContent = 'TIME: ' + 
-            String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
-
-        // Distance display
-        document.getElementById('distanceDisplay').textContent = 'DISTANCE: ' + Math.round(gameState.distance) + 'm';
-
-        // Lap timer
-        const lapMinutes = Math.floor(gameState.lapTime / 60);
-        const lapSeconds = Math.floor(gameState.lapTime % 60);
-        document.getElementById('lapTimer').textContent = 'LAP: ' + 
-            String(lapMinutes).padStart(2, '0') + ':' + String(lapSeconds).padStart(2, '0');
-
-        // FPS display
-        frameCount++;
-        const now = Date.now();
-        if (now - lastFrameTime >= 1000) {
-            gameState.fps = frameCount;
-            document.getElementById('fpsDisplay').textContent = 'FPS: ' + frameCount;
-            frameCount = 0;
-            lastFrameTime = now;
-        }
-    }
-
-    // ==================== GAME LOOP ==================== 
-    function gameLoop() {
-        requestAnimationFrame(gameLoop);
-
-        if (gameState.isRunning && !gameState.isPaused) {
-            handleInput();
-            updatePhysics();
-            gameState.totalTime += 0.016;
-            gameState.lapTime += 0.016;
+        function adjustBrightness(color, percent) {
+            const num = parseInt(color.replace("#",""), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 +
+                (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255))
+                .toString(16).slice(1);
         }
 
-        updateUI();
-        renderer.render(scene, camera);
-    }
-
-    // ==================== MENU FUNCTIONS ==================== 
-    function startRace() {
-        document.getElementById('mainMenu').classList.add('hidden');
-        gameState.isRunning = true;
-        gameState.gameMode = 'race';
-        gameState.speed = 0;
-        gameState.totalTime = 0;
-        gameState.lapTime = 0;
-        gameState.distance = 0;
-        vehicle.position.set(0, 0, 0);
-        document.getElementById('controlsText').textContent = 'ARROW KEYS / WASD: Drive | SPACE: Brake | P: Pause | ESC: Menu';
-    }
-
-    function startFreeRoam() {
-        document.getElementById('mainMenu').classList.add('hidden');
-        gameState.isRunning = true;
-        gameState.gameMode = 'freeRoam';
-        gameState.speed = 0;
-        gameState.totalTime = 0;
-        gameState.lapTime = 0;
-        gameState.distance = 0;
-        vehicle.position.set(0, 0, 0);
-        document.getElementById('controlsText').textContent = 'FREE ROAM: Explore Tokyo | ARROW KEYS / WASD: Drive | SPACE: Brake | P: Pause | ESC: Menu';
-    }
-
-    function togglePause() {
-        if (!gameState.isRunning) return;
-        gameState.isPaused = !gameState.isPaused;
-        const pauseMenu = document.getElementById('pauseMenu');
-        if (gameState.isPaused) {
-            pauseMenu.classList.add('show');
-        } else {
-            pauseMenu.classList.remove('show');
+        function drawMinimap() {
+            const minimap = document.getElementById('minimapContent');
+            const minimapWidth = minimap.offsetWidth;
+            const minimapHeight = minimap.offsetHeight;
+            
+            const scaleX = minimapWidth / mapWidth;
+            const scaleY = minimapHeight / mapHeight;
+            
+            // Draw buildings on minimap
+            const temp = ctx;
+            ctx = document.createElement('canvas').getContext('2d');
+            
+            // This would be better done with a separate canvas, but for now update player position
+            const minimapPlayer = minimap.querySelector('.minimap-player');
+            minimapPlayer.style.left = (player.x / mapWidth * 100) + '%';
+            minimapPlayer.style.top = (player.y / mapHeight * 100) + '%';
         }
-    }
 
-    function resumeGame() {
-        gameState.isPaused = false;
-        document.getElementById('pauseMenu').classList.remove('show');
-    }
+        // ==================== UPDATE FUNCTIONS ====================
+        function updatePlayer() {
+            let accel = 0;
+            
+            if (keys['w'] || keys['arrowup']) accel = player.acceleration;
+            if (keys['s'] || keys['arrowdown']) accel = -player.acceleration * 0.5;
+            
+            player.speed += accel;
+            player.speed = Math.max(-player.maxSpeed * 0.5, Math.min(player.speed, player.maxSpeed));
+            player.speed *= player.friction;
+            
+            if (keys['a'] || keys['arrowleft']) player.angle -= 0.15;
+            if (keys['d'] || keys['arrowright']) player.angle += 0.15;
+            
+            player.vx = Math.cos(player.angle) * player.speed;
+            player.vy = Math.sin(player.angle) * player.speed;
+            
+            player.x += player.vx;
+            player.y += player.vy;
+            
+            // Boundaries
+            player.x = Math.max(0, Math.min(player.x, mapWidth));
+            player.y = Math.max(0, Math.min(player.y, mapHeight));
+            
+            player.rpm = Math.abs(player.speed) * 200;
+        }
 
-    function returnToMenu() {
-        gameState.isRunning = false;
-        gameState.isPaused = false;
-        document.getElementById('mainMenu').classList.remove('hidden');
-        document.getElementById('pauseMenu').classList.remove('show');
-        gameState.speed = 0;
-        vehicle.position.set(0, 0, 0);
-        vehicle.rotation.set(0, 0, 0);
-    }
+        function checkCollisions() {
+            for (let building of buildings) {
+                if (player.x - player.width/2 < building.x + building.w &&
+                    player.x + player.width/2 > building.x &&
+                    player.y - player.height/2 < building.y + building.h &&
+                    player.y + player.height/2 > building.y) {
+                    
+                    player.speed = 0;
+                    const pushX = player.x < building.x + building.w/2 ? -10 : 10;
+                    const pushY = player.y < building.y + building.h/2 ? -10 : 10;
+                    player.x += pushX;
+                    player.y += pushY;
+                }
+            }
+        }
 
-    function showSettings() {
-        alert('⚙️ SETTINGS\n\n🔊 Volume: 100%\n🎮 Controls: Keyboard\n📊 Graphics: Ultra\n\nSettings will be available in future updates!');
-    }
+        // ==================== RENDER ====================
+        function render() {
+            const offsetX = player.x - canvas.width / 3;
+            const offsetY = player.y - canvas.height / 2;
+            
+            // Sky gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#0a1a2e');
+            gradient.addColorStop(0.5, '#16213e');
+            gradient.addColorStop(1, '#0f3460');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Grid for Tokyo streets
+            ctx.strokeStyle = 'rgba(0, 212, 255, 0.15)';
+            ctx.lineWidth = 1;
+            const gridSize = 100;
+            for (let x = -gridSize; x < canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = -gridSize; y < canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            // Draw roads
+            drawRoad(0, 250, mapWidth, 250, offsetX, offsetY, 70);
+            drawRoad(500, 0, 500, mapHeight, offsetX, offsetY, 70);
+            drawRoad(1000, 50, 1000, mapHeight, offsetX, offsetY, 60);
+            drawRoad(100, 700, mapWidth - 100, 700, offsetX, offsetY, 65);
+            drawRoad(200, 0, 200, mapHeight, offsetX, offsetY, 55);
+            
+            // Draw buildings
+            for (let building of buildings) {
+                drawBuilding(building, offsetX, offsetY);
+            }
+            
+            // Draw player
+            drawPlayer(offsetX, offsetY);
+            
+            // Update HUD
+            updateHUD(offsetX, offsetY);
+        }
 
-    function showCredits() {
-        alert('ℹ️ ABOUT Tokyo Racing\n\nA web-based open-world racing game prototype.\n\nDeveloped for mobile and desktop platforms.\n\n🎮 Engine: Three.js\n💻 Language: JavaScript\n🎨 Design: Cyberpunk Neon\n\n© 2024 Tokyo Racing. All rights reserved.');
-    }
+        function updateHUD(offsetX, offsetY) {
+            document.getElementById('speedDisplay').textContent = Math.round(Math.abs(player.speed * 10)) + ' km/h';
+            document.getElementById('rpmDisplay').textContent = 'RPM: ' + Math.round(player.rpm);
+            document.getElementById('posX').textContent = Math.round(player.x);
+            document.getElementById('posY').textContent = Math.round(player.y);
+            document.getElementById('dirDisplay').textContent = Math.round(player.angle * 180 / Math.PI);
+            
+            if (gameState.running) {
+                gameState.elapsedTime = Math.floor((Date.now() - gameState.startTime) / 1000);
+                const minutes = Math.floor(gameState.elapsedTime / 60);
+                const seconds = gameState.elapsedTime % 60;
+                document.getElementById('timeDisplay').textContent = 
+                    (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+            }
+        }
 
-    // ==================== RESPONSIVE ==================== 
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+        // ==================== GAME LOOP ====================
+        function gameLoop() {
+            if (gameState.running && !gameState.paused) {
+                updatePlayer();
+                checkCollisions();
+                render();
+            }
+            requestAnimationFrame(gameLoop);
+        }
 
-    // ==================== START GAME ==================== 
-    gameLoop();
-</script>
+        // ==================== MENU FUNCTIONS ====================
+        function startGame() {
+            document.getElementById('menu').classList.add('hidden');
+            gameState.running = true;
+            gameState.paused = false;
+            gameState.startTime = Date.now();
+            gameState.elapsedTime = 0;
+        }
 
+        function pauseGame() {
+            gameState.paused = true;
+            document.getElementById('pauseMenu').classList.add('show');
+        }
+
+        function resumeGame() {
+            gameState.paused = false;
+            document.getElementById('pauseMenu').classList.remove('show');
+            gameState.startTime = Date.now() - gameState.elapsedTime * 1000;
+        }
+
+        function goMainMenu() {
+            gameState.running = false;
+            gameState.paused = false;
+            player.x = 400;
+            player.y = 300;
+            player.speed = 0;
+            player.vx = 0;
+            player.vy = 0;
+            document.getElementById('menu').classList.remove('hidden');
+            document.getElementById('pauseMenu').classList.remove('show');
+        }
+
+        function showSettings() {
+            alert('⚙ Settings\n\n- Adjust graphics quality\n- Change difficulty\n- Control sensitivity');
+        }
+
+        function showControls() {
+            alert('🎮 Controls\n\nW/↑ - Accelerate\nS/↓ - Brake\nA/← - Turn Left\nD/→ - Turn Right\nSPACE - Pause\n\nEnjoy Racing! 🏎️');
+        }
+
+        // ==================== START ====================
+        gameLoop();
+    </script>
 </body>
 </html>
