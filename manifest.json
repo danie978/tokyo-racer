@@ -1,0 +1,29 @@
+{
+  "name": "Tokyo Racing",
+  "short_name": "Tokyo Racing",
+  "description": "Open-World Racing Game",
+  "start_url": "./game.html",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#000000",
+  "theme_color": "#00d4ff",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23000' width='192' height='192'/><text x='96' y='120' font-size='100' text-anchor='middle' fill='%2300d4ff' font-family='Arial' font-weight='bold'>🏎️</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": [
+    "games"
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%230f0f1e' width='540' height='720'/><text x='270' y='360' font-size='80' text-anchor='middle' fill='%2300d4ff' font-family='Arial' font-weight='bold'>TOKYO RACING</text></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ]
+}
