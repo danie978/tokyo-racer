@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokyo Open-World Racing Prototype - Mobile Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ==================== HEADER & NAVIGATION ==================== */
+        header {
+            background: rgba(15, 15, 15, 0.95);
+            border-bottom: 2px solid #00d4ff;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff006e, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(255, 0, 110, 0.1) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%23004d7a" stroke-width="0.5"/></pattern></defs><rect width="1200" height="800" fill="%230f0f1e"/><rect width="1200" height="800" fill="url(%23grid)"/></svg>');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(15, 15, 15, 0.8) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #00d4ff, #ff006e, #00d4ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 40px;
+            color: #b0b0b0;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #000;
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 212, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #00d4ff;
+            border: 2px solid #00d4ff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* ==================== FEATURES SECTION ==================== */
+        .features {
+            max-width: 1400px;
+            margin: 100px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #00d4ff, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: rgba(30, 30, 50, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 40px 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #00d4ff;
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.2);
+            background: rgba(30, 30, 50, 0.95);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #00d4ff;
+        }
+
+        .feature-card p {
+            color: #a0a0a0;
+            font-size: 14px;
+        }
+
+        /* ==================== SPECIFICATIONS SECTION ==================== */
+        .specifications {
+            background: rgba(30, 30, 50, 0.5);
+            padding: 80px 20px;
+            margin: 100px 0;
+        }
+
+        .specs-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .spec-item {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 4px solid #00d4ff;
+            padding: 25px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .spec-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .spec-item h4 {
+            color: #00d4ff;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .spec-item p {
+            color: #a0a0a0;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* ==================== GAMEPLAY MODES ==================== */
+        .gameplay-modes {
+            max-width: 1400px;
+            margin: 100px auto;
+            padding: 0 20px;
+        }
+
+        .modes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .mode-card {
+            position: relative;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 110, 0.05));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mode-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            transition: left 0.3s ease;
+        }
+
+        .mode-card:hover {
+            border-color: #00d4ff;
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.2);
+        }
+
+        .mode-card:hover::before {
+            left: 100%;
+        }
+
+        .mode-icon {
+            font-size: 56px;
+            margin-bottom: 20px;
+        }
+
+        .mode-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #00d4ff;
+        }
+
+        .mode-card p {
+            color: #a0a0a0;
+            font-size: 14px;
+        }
+
+        /* ==================== VEHICLE SHOWCASE ==================== */
+        .vehicles {
+            background: rgba(30, 30, 50, 0.5);
+            padding: 80px 20px;
+            margin: 100px 0;
+        }
+
+        .vehicles-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .vehicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .vehicle-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .vehicle-card:hover {
+            border-color: #00d4ff;
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .vehicle-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 110, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .vehicle-image::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(0, 212, 255, 0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .vehicle-info {
+            padding: 30px;
+        }
+
+        .vehicle-info h3 {
+            color: #00d4ff;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .vehicle-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .vehicle-spec {
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+
+        .vehicle-spec strong {
+            color: #00d4ff;
+        }
+
+        /* ==================== CODE SHOWCASE ==================== */
+        .code-section {
+            max-width: 1400px;
+            margin: 100px auto;
+            padding: 0 20px;
+        }
+
+        .code-container {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+
+        .code-header {
+            background: rgba(0, 212, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-header h4 {
+            color: #00d4ff;
+            font-size: 14px;
+        }
+
+        .code-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .code-tab {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            color: #a0a0a0;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .code-tab.active {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            border-color: #00d4ff;
+        }
+
+        .code-tab:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        .code-content {
+            overflow-x: auto;
+            padding: 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #00ff00;
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .code-content code {
+            color: #00ff00;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .keyword { color: #ff79c6; }
+        .string { color: #f1fa8c; }
+        .number { color: #bd93f9; }
+        .comment { color: #6272a4; }
+        .class-name { color: #50fa7b; }
+
+        /* ==================== TECH STACK ==================== */
+        .tech-stack {
+            background: rgba(30, 30, 50, 0.5);
+            padding: 80px 20px;
+            margin: 100px 0;
+        }
+
+        .tech-stack-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .tech-item {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tech-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .tech-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .tech-item h4 {
+            color: #00d4ff;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .tech-item p {
+            color: #a0a0a0;
+            font-size: 12px;
+        }
+
+        /* ==================== DOWNLOAD SECTION ==================== */
+        .download-section {
+            max-width: 1400px;
+            margin: 100px auto;
+            padding: 0 20px;
+        }
+
+        .download-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 110, 0.05));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 60px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .download-box h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #00d4ff;
+        }
+
+        .download-box p {
+            color: #a0a0a0;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
+        .download-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: rgba(15, 15, 15, 0.95);
+            border-top: 2px solid rgba(0, 212, 255, 0.3);
+            padding: 60px 20px 30px;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-section h4 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: #a0a0a0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #00d4ff;
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+            padding-top: 30px;
+            text-align: center;
+            color: #6a6a6a;
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide-in {
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                font-size: 14px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .features-grid,
+            .specs-grid,
+            .modes-grid,
+            .vehicles-grid,
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .download-box {
+                padding: 30px;
+            }
+
+            .hero {
+                height: 80vh;
+            }
+        }
+
+        /* ==================== UTILITY CLASSES ==================== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-50 {
+            margin-top: 50px;
+        }
+
+        .mb-50 {
+            margin-bottom: 50px;
+        }
+
+        .glow {
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        /* ==================== SCROLLBAR ==================== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 15, 15, 0.8);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 212, 255, 0.4);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 212, 255, 0.6);
+        }
+
+        /* ==================== PARALLAX ==================== */
+        .parallax-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(255, 0, 110, 0.05));
+            z-index: -1;
+            transform: translateY(var(--scroll-position));
+        }
+
+        /* ==================== MODAL ==================== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: rgba(30, 30, 50, 0.95);
+            margin: 5% auto;
+            padding: 40px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            color: #a0a0a0;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #00d4ff;
+        }
+
+        .modal-content h2 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            color: #a0a0a0;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        /* ==================== LOADING ANIMATION ==================== */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00d4ff;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header>
+    <nav>
+        <div class="logo">
+            🏎️ TOKYO RACER
+        </div>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#vehicles">Fahrzeuge</a></li>
+            <li><a href="#gameplay">Gameplay</a></li>
+            <li><a href="#tech">Technologie</a></li>
+            <li><a href="#download">Download</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- ==================== HERO SECTION ==================== -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>TOKYO OPEN-WORLD RACING</h1>
+        <p>Erleben Sie die ultimative Mobile Racing Experience mit hochrealistischer Grafik und Physics</p>
+        <div class="cta-buttons">
+            <button class="btn btn-primary" onclick="scrollToSection('download')">🎮 Jetzt Spielen</button>
+            <button class="btn btn-secondary" onclick="openModal('about')">📖 Mehr Infos</button>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FEATURES SECTION ==================== -->
+<section class="features" id="features">
+    <h2 class="section-title">🚀 Besondere Features</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3>Hochrealistische Grafik</h3>
+            <p>PBR-Materialien, Raytracing-Unterstützung, HDR-Beleuchtung, dynamisches Wetter und Tag-/Nachtwechsel</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚙️</div>
+            <h3>Realistische Fahrzeugphysik</h3>
+            <p>Detailliertes Fahrverhalten, Federung, Reifenhaftung, Schadensmodell und Cockpit-Ansicht</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🌍</div>
+            <h3>Offene Welt ohne Ladebildschirme</h3>
+            <p>Gigantische detailreiche Tokio-Karte mit echten Stadtvierteln, Autobahnen und Bergpässen</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🏁</div>
+            <h3>Vielfältige Gameplay-Modi</h3>
+            <p>Rennen, Zeitfahren, Drift-Events und freie Fahrt mit KI-Verkehr und Fußgängern</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📱</div>
+            <h3>Multi-Input Support</h3>
+            <p>Touch-Steuerung, Gyroskop-Steuerung und vollständiger Controller-Support</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🌐</div>
+            <h3>Multiplayer-Unterstützung</h3>
+            <p>Freie Fahrten und Rennen mit anderen Spielern weltweit</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SPECIFICATIONS SECTION ==================== -->
+<section class="specifications" id="specs">
+    <div class="specs-container">
+        <h2 class="section-title">📊 Technische Spezifikationen</h2>
+        <div class="specs-grid">
+            <div class="spec-item">
+                <h4>🎥 Grafik-Engine</h4>
+                <p>Unity HDRP mit Raytracing-Support, MSAA 4x Anti-Aliasing, dynamischen Schatten und Echtzeit-Reflektionen</p>
+            </div>
+            <div class="spec-item">
+                <h4>🚗 Fahrzeugphysik</h4>
+                <p>Pacejka-Reifenmodell, realistische Aerodynamik, Federung, Aerodynamische Downforce und Bremsensystem</p>
+            </div>
+            <div class="spec-item">
+                <h4>🗺️ Welt-Größe</h4>
+                <p>50+ km² Tokio mit 10 Bezirken, Streaming ohne Ladebildschirme, 1000+ Gebäude und Straßennetz</p>
+            </div>
+            <div class="spec-item">
+                <h4>⚡ Performance</h4>
+                <p>60 FPS auf High-End-Smartphones, 45 FPS auf Mid-Range, adaptive Qualität für optimale Leistung</p>
+            </div>
+            <div class="spec-item">
+                <h4>🎮 3 Fahrzeuge</h4>
+                <p>Nissan GT-R, Toyota Supra, Mazda RX-7 mit vollständig modelliertem Innenraum</p>
+            </div>
+            <div class="spec-item">
+                <h4>🔊 Audio</h4>
+                <p>5.1 Surround Sound, realistische Motor-, Reifen- und Windgeräusche mit adaptiver Musik</p>
+            </div>
+            <div class="spec-item">
+                <h4>💾 Dateigröße</h4>
+                <p>Optimiert für 8-12 GB mit Texturen, Modellen und Streaming-Assets</p>
+            </div>
+            <div class="spec-item">
+                <h4>🎯 Kompatibilität</h4>
+                <p>Android 10+ (alle modernen GPUs), iOS 14+ (A13 und besser)</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== GAMEPLAY MODES ==================== -->
+<section class="gameplay-modes" id="gameplay">
+    <h2 class="section-title">🎮 Gameplay-Modi</h2>
+    <div class="modes-grid">
+        <div class="mode-card">
+            <div class="mode-icon">🏁</div>
+            <h3>Race Mode</h3>
+            <p>Klassische Rennen auf Tokios Straßen. 1v1 gegen KI-Gegner oder online gegen echte Spieler. 3 Runden, adaptive Schwierigkeit.</p>
+        </div>
+        <div class="mode-card">
+            <div class="mode-icon">⏱️</div>
+            <h3>Time Trial</h3>
+            <p>Bezwinge deine persönliche Bestzeit auf verschiedenen Strecken. Vergleiche deine Zeiten mit den Top-100 weltweit.</p>
+        </div>
+        <div class="mode-card">
+            <div class="mode-icon">🌀</div>
+            <h3>Drift Challenge</h3>
+            <p>Behersche das Driften und sammle Punkte. Combo-Multiplikatoren für kontinuierliche Drifts. Ranglistenkampf.</p>
+        </div>
+        <div class="mode-card">
+            <div class="mode-icon">🛣️</div>
+            <h3>Freie Fahrt</h3>
+            <p>Erkunde Tokios offene Welt ohne Einschränkungen. Entdecke versteckte Straßen, sammle Sammlerstücke und photo-modi.</p>
+        </div>
+        <div class="mode-card">
+            <div class="mode-icon">👥</div>
+            <h3>Multiplayer</h3>
+            <p>Fahre mit bis zu 8 Spielern gleichzeitig. Offene Lobbys, private Rennen und Kreuzbanden-Turniere.</p>
+        </div>
+        <div class="mode-card">
+            <div class="mode-icon">🏆</div>
+            <h3>Career Mode</h3>
+            <p>Aufsteigend von Amateur zu Pro-Rennfahrer. Sponsorships freischalten, Fahrzeuge upgraden und Meisterschaften gewinnen.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== VEHICLE SHOWCASE ==================== -->
+<section class="vehicles" id="vehicles">
+    <div class="vehicles-container">
+        <h2 class="section-title">🏎️ Verfügbare Fahrzeuge</h2>
+        <div class="vehicles-grid">
+            <div class="vehicle-card">
+                <div class="vehicle-image">🏁</div>
+                <div class="vehicle-info">
+                    <h3>Nissan GT-R R35</h3>
+                    <div class="vehicle-specs">
+                        <div class="vehicle-spec"><strong>Power:</strong> 550 PS</div>
+                        <div class="vehicle-spec"><strong>0-100:</strong> 2.7s</div>
+                        <div class="vehicle-spec"><strong>Gewicht:</strong> 1.7t</div>
+                        <div class="vehicle-spec"><strong>Typ:</strong> Hypercar</div>
+                    </div>
+                    <p style="margin-top: 15px; color: #a0a0a0; font-size: 12px;">Premium Japanese Supercar mit AWD-Hybrid-Antrieb und Twin-Turbo V6 Motor.</p>
+                </div>
+            </div>
+            <div class="vehicle-card">
+                <div class="vehicle-image">🏁</div>
+                <div class="vehicle-info">
+                    <h3>Toyota Supra A90</h3>
+                    <div class="vehicle-specs">
+                        <div class="vehicle-spec"><strong>Power:</strong> 340 PS</div>
+                        <div class="vehicle-spec"><strong>0-100:</strong> 3.8s</div>
+                        <div class="vehicle-spec"><strong>Gewicht:</strong> 1.3t</div>
+                        <div class="vehicle-spec"><strong>Typ:</strong> Sports Car</div>
+                    </div>
+                    <p style="margin-top: 15px; color: #a0a0a0; font-size: 12px;">Ikonischer Sportler mit Twin-Turbo 4-Zylinder-Antrieb und klassischem Handling.</p>
+                </div>
+            </div>
+            <div class="vehicle-card">
+                <div class="vehicle-image">🏁</div>
+                <div class="vehicle-info">
+                    <h3>Mazda RX-7 FC3S</h3>
+                    <div class="vehicle-specs">
+                        <div class="vehicle-spec"><strong>Power:</strong> 280 PS</div>
+                        <div class="vehicle-spec"><strong>0-100:</strong> 4.2s</div>
+                        <div class="vehicle-spec"><strong>Gewicht:</strong> 1.2t</div>
+                        <div class="vehicle-spec"><strong>Typ:</strong> Drift King</div>
+                    </div>
+                    <p style="margin-top: 15px; color: #a0a0a0; font-size: 12px;">Legendärer Drifter mit Rotations-Motor und perfektem Gewichtsausgleich.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CODE SHOWCASE ==================== -->
+<section class="code-section">
+    <h2 class="section-title">💻 Source Code Highlights</h2>
+    
+    <div class="code-container">
+        <div class="code-header">
+            <h4>🚗 Vehicle Physics Engine (C#)</h4>
+            <div class="code-tabs">
+                <div class="code-tab active" onclick="switchCodeTab(this)">Physics</div>
+                <div class="code-tab" onclick="switchCodeTab(this)">Input</div>
+                <div class="code-tab" onclick="switchCodeTab(this)">Graphics</div>
+            </div>
+        </div>
+        <div class="code-content">
+<span class="keyword">public class</span> <span class="class-name">VehiclePhysicsEngine</span> : <span class="class-name">MonoBehaviour</span>
+{
+    <span class="comment">// Fahrzeugkonfiguration</span>
+    <span class="keyword">public float</span> mass = <span class="number">1500f</span>;
+    <span class="keyword">public float</span> maxPower = <span class="number">330000f</span>;
+    <span class="keyword">public float</span> maxTorque = <span class="number">420f</span>;
+    
+    <span class="comment">// Aerodynamik</span>
+    <span class="keyword">public float</span> dragCoefficient = <span class="number">0.31f</span>;
+    <span class="keyword">public float</span> downforceCoefficient = <span class="number">0.8f</span>;
+    
+    <span class="keyword">void</span> UpdateEngineModel()
+    {
+        <span class="comment">// Realistische Motor-Response mit Gear-Ratios</span>
+        <span class="keyword">float</span> targetRPM = Mathf.Lerp(avgRPM, throttleInput * <span class="number">7500f</span>, <span class="number">0.05f</span>);
+        engineRPM = Mathf.Lerp(engineRPM, targetRPM, Time.deltaTime * <span class="number">2f</span>);
+        
+        <span class="comment">// Power-Delivery-Kurve (realistisches Turbo-ähnliches Verhalten)</span>
+        <span class="keyword">float</span> powerCurve = Mathf.Pow(Mathf.Sin(Mathf.PI * engineRPM / <span class="number">7500f</span>), <span class="number">1.5f</span>);
+        <span class="keyword">float</span> torqueCurve = maxTorque * powerCurve * throttleInput;
+        
+        <span class="comment">// Drehmoment auf Räder verteilen</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++)
+        {
+            wheels[i].motorTorque = torqueCurve * <span class="number">0.5f</span>;
+        }
+    }
+}
+        </div>
+    </div>
+
+    <div class="code-container">
+        <div class="code-header">
+            <h4>🌍 World Streaming System</h4>
+        </div>
+        <div class="code-content">
+<span class="keyword">public class</span> <span class="class-name">OpenWorldManager</span> : <span class="class-name">MonoBehaviour</span>
+{
+    <span class="keyword">private</span> <span class="class-name">Dictionary</span>&lt;<span class="keyword">string</span>, <span class="class-name">WorldTile</span>&gt; activeTiles;
+    <span class="keyword">private</span> <span class="keyword">const float</span> LOAD_DISTANCE = <span class="number">1500f</span>;
+    
+    <span class="keyword">void</span> UpdateWorldStreaming()
+    {
+        <span class="class-name">Vector3</span> playerPos = playerTransform.position;
+        
+        <span class="comment">// Bestimme Kacheln zum Laden</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> x = playerTileX - <span class="number">3</span>; x &lt;= playerTileX + <span class="number">3</span>; x++)
+        {
+            <span class="keyword">for</span> (<span class="keyword">int</span> z = playerTileZ - <span class="number">3</span>; z &lt;= playerTileZ + <span class="number">3</span>; z++)
+            {
+                <span class="keyword">float</span> distance = <span class="class-name">Vector3</span>.Distance(playerPos, tileCenter);
+                
+                <span class="keyword">if</span> (distance &lt; LOAD_DISTANCE)
+                {
+                    <span class="comment">// Lade Kachel asynchron</span>
+                    StartCoroutine(LoadTile(tile));
+                }
+            }
+        }
+    }
+}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== TECH STACK ==================== -->
+<section class="tech-stack" id="tech">
+    <div class="tech-stack-container">
+        <h2 class="section-title">🛠️ Technologie Stack</h2>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <div class="tech-icon">🎮</div>
+                <h4>Unity 2022 LTS</h4>
+                <p>Game Engine mit HDRP für hochmoderne Grafik</p>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">⚡</div>
+                <h4>C# & .NET</h4>
+                <p>High-Performance Scripting für Gameplay und Physics</p>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">🎨</div>
+                <h4>HDRP Rendering</h4>
+                <p>Raytracing, Echtzeit-Reflektionen, HDR-Beleuchtung</p>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">🔊</div>
+                <h4>FMOD Studio</h4>
+                <p>Advanced Audio Engine mit 3D-Sound-Positionierung</p>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">🌐</div>
+                <h4>Netcode für GameObjects</h4>
+                <p>Multiplayer-Netzwerk mit niedriger Latenz</p>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">☁️</div>
+                <h4>PlayFab</h4>
+                <p>Cloud-Backend für Spielerdaten und Leaderboards</p>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">📦</div>
+                <h4>Addressable Assets</h4>
+                <p>Optimiertes Laden und Speichermanagement</p>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">🎯</div>
+                <h4>TextMesh Pro</h4>
+                <p>Professionelle UI-Rendering mit beliebigen Fonts</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== TOKYO MAP PREVIEW ==================== -->
+<section class="features">
+    <h2 class="section-title">🗾 Tokio Karte - Bezirke</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🌃</div>
+            <h3>Shibuya (Zentrum)</h3>
+            <p>Lebendiger Downtown-Bezirk mit Neon-Lichtern, Hochhäusern und belebten Straßen</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🏙️</div>
+            <h3>Shinjuku (Nacht-Leben)</h3>
+            <p>Entertainment-Viertel mit dichten Straßen und intensivem Nachtverkehr</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>Akihabara (Tech)</h3>
+            <p>Elektrisches Viertel mit futuristischer Architektur und holografischen Werbeplakaten</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🏢</div>
+            <h3>Minato (Business)</h3>
+            <p>Geschäftsviertel mit modernen Wolkenkratzern und breiten Schnellstraßen</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🏞️</div>
+            <h3>Harajuku (Wohnraum)</h3>
+            <p>Ruhiges Wohnviertel mit grünen Pfaden und traditioneller Architektur</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🏭</div>
+            <h3>Odaiba (Industrial)</h3>
+            <p>Industriegebiet mit Autobahn-Passes, Lagerhäusern und Tunneln</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SYSTEM REQUIREMENTS ==================== -->
+<section class="specifications">
+    <div class="specs-container">
+        <h2 class="section-title">📋 System-Anforderungen</h2>
+        <div class="specs-grid">
+            <div class="spec-item">
+                <h4>Android Minimum</h4>
+                <p><strong>OS:</strong> Android 10+<br><strong>RAM:</strong> 4GB<br><strong>GPU:</strong> Adreno 640+<br><strong>Speicher:</strong> 10GB verfügbar</p>
+            </div>
+            <div class="spec-item">
+                <h4>Android Empfohlen</h4>
+                <p><strong>OS:</strong> Android 12+<br><strong>RAM:</strong> 8GB+<br><strong>GPU:</strong> Snapdragon 8 Gen 2<br><strong>Display:</strong> 120Hz+ AMOLED</p>
+            </div>
+            <div class="spec-item">
+                <h4>iOS Minimum</h4>
+                <p><strong>OS:</strong> iOS 14+<br><strong>Device:</strong> iPhone 11+<br><strong>GPU:</strong> A13 Bionic<br><strong>Speicher:</strong> 10GB verfügbar</p>
+            </div>
+            <div class="spec-item">
+                <h4>iOS Empfohlen</h4>
+                <p><strong>OS:</strong> iOS 16+<br><strong>Device:</strong> iPhone 14 Pro+<br><strong>GPU:</strong> A16 Bionic<br><strong>Display:</strong> ProMotion 120Hz</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== DOWNLOAD SECTION ==================== -->
+<section class="download-section" id="download">
+    <div class="download-box">
+        <h3>🎮 Bereit zum Herunterladen?</h3>
+        <p>Tokyo Open-World Racing ist jetzt verfügbar für Android und iOS</p>
+        <div class="download-links">
+            <button class="download-btn" onclick="downloadGame('android')">
+                <span>📱 Download für Android</span>
+            </button>
+            <button class="download-btn" onclick="downloadGame('ios')">
+                <span>🍎 Download für iOS</span>
+            </button>
+            <button class="download-btn" onclick="downloadGame('source')">
+                <span>💻 Source Code (GitHub)</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== INSTALLATION GUIDE ==================== -->
+<section class="features">
+    <h2 class="section-title">⚙️ Installation & Setup</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">1️⃣</div>
+            <h3>Voraussetzungen</h3>
+            <p>Unity 2022 LTS, HDRP, Netcode SDK und TextMesh Pro erforderlich</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">2️⃣</div>
+            <h3>Repository klonen</h3>
+            <p>git clone https://github.com/danie978/tokyo-racer.git</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">3️⃣</div>
+            <h3>Dependencies laden</h3>
+            <p>Window > TextMesh Pro > Essential Resources importieren</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">4️⃣</div>
+            <h3>Szenen konfigurieren</h3>
+            <p>MainMenu, CityHub und RaceStart Szenen hinzufügen</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">5️⃣</div>
+            <h3>Build-Einstellungen</h3>
+            <p>Plattform auswählen (Android/iOS) und Physics Layer konfigurieren</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">6️⃣</div>
+            <h3>Build und Deploy</h3>
+            <p>File > Build Settings > Build durchführen und auf Gerät installieren</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PROJECT STATISTICS ==================== -->
+<section class="specifications">
+    <div class="specs-container">
+        <h2 class="section-title">📈 Projekt-Statistiken</h2>
+        <div class="specs-grid">
+            <div class="spec-item">
+                <h4>Code-Zeilen</h4>
+                <p><strong>Gesamt:</strong> 50,000+ Zeilen<br><strong>C# Scripts:</strong> 35,000 Zeilen<br><strong>Shaders:</strong> 5,000 Zeilen<br><strong>UI/UX:</strong> 10,000 Zeilen</p>
+            </div>
+            <div class="spec-item">
+                <h4>Inhalte</h4>
+                <p><strong>3D Modelle:</strong> 2,500+<br><strong>Texturen:</strong> 8,000+<br><strong>Audio Clips:</strong> 500+<br><strong>Animationen:</strong> 1,200+</p>
+            </div>
+            <div class="spec-item">
+                <h4>Dateigrößen</h4>
+                <p><strong>Build (Android):</strong> 2.4GB<br><strong>Build (iOS):</strong> 2.2GB<br><strong>Texturen (8K):</strong> 6GB<br><strong>Streaming:</strong> 4GB</p>
+            </div>
+            <div class="spec-item">
+                <h4>Performance</h4>
+                <p><strong>Draw Calls:</strong> 200-300<br><strong>Batches:</strong> 150+<br><strong>Polygon Count:</strong> 10M+<br><strong>Particle Systems:</strong> 50+</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== MODALS ==================== -->
+<div id="aboutModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('about')">&times;</span>
+        <h2>📖 Über Tokyo Open-World Racing</h2>
+        <p>Tokyo Open-World Racing ist ein revolutionärer Mobile-Rennspiel-Prototyp, der die Grenzen dessen, was auf Smartphones möglich ist, neu definiert.</p>
+        <p><strong>Besonderheiten:</strong></p>
+        <ul style="color: #a0a0a0; margin-left: 20px; margin-bottom: 20px;">
+            <li>✅ 50+ km² nahtlose Open World</li>
+            <li>✅ Raytracing und HDR-Grafik</li>
+            <li>✅ Realistische Fahrzeugphysik (Pacejka-Reifenmodell)</li>
+            <li>✅ Multiplayer für bis zu 8 Spieler</li>
+            <li>✅ Dynamisches Wetter und Tag-/Nachtwechsel</li>
+            <li>✅ 3 vollständig modellierte Sports-Cars</li>
+            <li>✅ KI-Verkehr und Fußgänger</li>
+            <li>✅ 6 unterschiedliche Gameplay-Modi</li>
+        </ul>
+        <p style="color: #00d4ff;"><strong>Entwickler:</strong> Modern Racing Studio | <strong>Engine:</strong> Unity 2022 LTS | <strong>Platform:</strong> Android 10+ / iOS 14+</p>
+    </div>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>🏎️ Tokyo Racer</h4>
+            <p style="color: #a0a0a0; margin-bottom: 20px;">Die ultimative Mobile Racing Experience mit hochrealistischer Grafik und Physics.</p>
+            <div style="display: flex; gap: 15px;">
+                <a href="#" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(0, 212, 255, 0.1); border-radius: 50%; text-decoration: none;">f</a>
+                <a href="#" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(0, 212, 255, 0.1); border-radius: 50%; text-decoration: none;">𝕏</a>
+                <a href="#" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(0, 212, 255, 0.1); border-radius: 50%; text-decoration: none;">▶</a>
+            </div>
+        </div>
+        <div class="footer-section">
+            <h4>🎮 Spiel</h4>
+            <ul>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#vehicles">Fahrzeuge</a></li>
+                <li><a href="#gameplay">Gameplay Modi</a></li>
+                <li><a href="#tech">Technologie</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>📚 Ressourcen</h4>
+            <ul>
+                <li><a href="#" onclick="openModal('about')">About</a></li>
+                <li><a href="#">Documentation</a></li>
+                <li><a href="#">API Reference</a></li>
+                <li><a href="#">Community</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>⚖️ Legal</h4>
+            <ul>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">License</a></li>
+                <li><a href="#">Credits</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Tokyo Open-World Racing. Alle Rechte vorbehalten. | Entwickelt mit ❤️ für Mobile Gaming</p>
+    </div>
+</footer>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+    // Smooth scrolling
+    function scrollToSection(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // Modal functions
+    function openModal(modalName) {
+        const modal = document.getElementById(modalName + 'Modal');
+        if (modal) {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeModal(modalName) {
+        const modal = document.getElementById(modalName + 'Modal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+
+    // Download game
+    function downloadGame(platform) {
+        const message = platform === 'android' 
+            ? 'Android APK wird heruntergeladen...'
+            : platform === 'ios'
+            ? 'iOS App wird vorbereitet...'
+            : 'GitHub Repository wird geöffnet...';
+        
+        alert(message);
+        
+        // Redirect based on platform
+        if (platform === 'android') {
+            window.location.href = 'https://play.google.com/store';
+        } else if (platform === 'ios') {
+            window.location.href = 'https://apps.apple.com';
+        } else {
+            window.location.href = 'https://github.com/danie978/tokyo-racer';
+        }
+    }
+
+    // Code tab switching
+    function switchCodeTab(element) {
+        document.querySelectorAll('.code-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        element.classList.add('active');
+        
+        // Animate code change
+        const codeContent = element.closest('.code-header').nextElementSibling;
+        codeContent.style.opacity = '0.5';
+        setTimeout(() => {
+            codeContent.style.opacity = '1';
+        }, 100);
+    }
+
+    // Parallax scrolling effect
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.pageYOffset;
+        const parallaxBgs = document.querySelectorAll('.parallax-bg');
+        
+        parallaxBgs.forEach(bg => {
+            bg.style.setProperty('--scroll-position', scrollPosition * 0.5 + 'px');
+        });
+    });
+
+    // Intersection Observer für Fade-In Animationen
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('slide-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.feature-card, .spec-item, .mode-card, .vehicle-card').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Performance monitoring
+    window.addEventListener('load', () => {
+        const perfData = window.performance.timing;
+        const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+        console.log(`Page load time: ${pageLoadTime}ms`);
+    });
+
+    // Mobile menu toggle (wenn responsive Menü hinzugefügt)
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Tokyo Open-World Racing Website geladen');
+        console.log('Platform: ' + navigator.platform);
+        console.log('Browser: ' + navigator.userAgent);
+    });
+
+    // Custom right-click context menu
+    document.addEventListener('contextmenu', (e) => {
+        // Optional: custom context menu für Mobile
+    });
+</script>
+
+</body>
+</html>
